@@ -29,10 +29,10 @@ def roi_circle(img, circle):
 
     mask = create_circular_mask(hRoi, wRoi)
 
-    maskedRoi = roi.copy()
-    maskedRoi[mask] = 0
+    masked_roi = roi.copy()
+    masked_roi[mask] = 0
 
-    return roi, maskedRoi
+    return roi, masked_roi
 
 def create_circular_mask(h, w, center=None, radius=None):
     """https://stackoverflow.com/a/44874588"""
@@ -46,3 +46,19 @@ def create_circular_mask(h, w, center=None, radius=None):
 
     mask = dist_from_center > radius
     return mask
+
+def draw_circles_on_image(img, circles):
+    output = img.copy()
+    for x, y, r in circles:
+        cv2.circle(output, (x, y), r, (0, 255, 0), 2)
+        cv2.circle(output, (x, y), 2, (0, 0, 255), 3)
+    return output
+
+def get_rois_from_image_and_circles(img, circles):
+    rois = []
+    rois_masked = []
+    for x, y, r in circles:
+        roi, roi_masked = roi_circle(img, (x, y, r))
+        rois.append(roi)
+        rois_masked.append(roi_masked)
+    return rois, rois_masked
