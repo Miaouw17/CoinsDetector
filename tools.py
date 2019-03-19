@@ -2,6 +2,21 @@ import os
 import cv2
 import numpy as np
 
+import shutil
+
+def clear_folder(f):
+    try:
+        shutil.rmtree(f)
+    except:
+        pass
+    os.mkdir(f)
+
+def file_extension(f):
+    splited = f.split(".")
+    extension = splited[-1]
+    del splited[-1]
+    return ".".join(splited), "." + extension
+
 def roi_circle(img, circle):
     output = img.copy()
     x = circle[0]

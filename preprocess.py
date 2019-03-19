@@ -5,8 +5,6 @@ import numpy as np
 from config import *
 
 def preprocess1(img):
-
-
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # cv2.imshow("gray", gray)
 
@@ -27,3 +25,4 @@ def preprocess1(img):
     # cv2.imshow("erode", erode)
 
     return erode
+
