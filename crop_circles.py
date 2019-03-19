@@ -8,7 +8,7 @@ from process import process1
 from tools import create_circular_mask, roi_circle
 
 if __name__ == '__main__':
-    input_folder = "img"
+    input_folder = "img/base"
     ouput_folder = "output"
 
     input_files = os.listdir(input_folder)
@@ -17,7 +17,7 @@ if __name__ == '__main__':
         path_input_file = input_folder + "/" + input_file
         img = cv2.imread(path_input_file)
         img = cv2.resize(img, None, fx=0.2, fy=0.2, interpolation=cv2.INTER_CUBIC)
-        
+        img = preprocess1(img)
         cv2.imshow("", img)
         cv2.waitKey(0)
         print(input_file)
