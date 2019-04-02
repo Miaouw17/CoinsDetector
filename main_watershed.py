@@ -12,24 +12,24 @@ img = cv2.resize(img, None, fx=0.2, fy=0.2, interpolation=cv2.INTER_CUBIC)
 imgPreprocessed = preprocess1(img)
 cv2.imshow("imgPreprocessed", imgPreprocessed)
 
-# # noise removal
-# kernel = np.ones((3,3),np.uint8)
-# # opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 2)
-# # cv2.imshow("opening", opening)
-#
-# # sure background area
-# sure_bg = cv2.dilate(imgPreprocessed,kernel,iterations=20)
-#
-# # Finding sure foreground area
-# dist_transform = cv2.distanceTransform(imgPreprocessed,cv2.DIST_L2,5)
-# ret, sure_fg = cv2.threshold(dist_transform,0.7*dist_transform.max(),255,0)
-#
-# # Finding unknown region
-# sure_fg = np.uint8(sure_fg)
-# cv2.imshow("sure_fg", sure_fg)
-#
-# unknown = cv2.subtract(sure_bg,sure_fg)
-# cv2.imshow("unknown", unknown)
+# noise removal
+kernel = np.ones((1,1),np.uint8)
+# opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 2)
+# cv2.imshow("opening", opening)
+
+# sure background area
+sure_bg = cv2.dilate(imgPreprocessed,kernel,iterations=20)
+
+# Finding sure foreground area
+dist_transform = cv2.distanceTransform(imgPreprocessed,cv2.DIST_L2,5)
+ret, sure_fg = cv2.threshold(dist_transform,0.7*dist_transform.max(),255,0)
+
+# Finding unknown region
+sure_fg = np.uint8(sure_fg)
+cv2.imshow("sure_fg", sure_fg)
+
+unknown = cv2.subtract(sure_bg,sure_fg)
+cv2.imshow("unknown", unknown)
 
 # Marker labelling
 ret, markers = cv2.connectedComponents(imgPreprocessed)
