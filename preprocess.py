@@ -5,7 +5,10 @@ import numpy as np
 from config import *
 
 def preprocess1(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blured = cv2.blur(img, **BLUR)
+    # cv2.imshow("blured", blured)
+
+    gray = cv2.cvtColor(blured, cv2.COLOR_BGR2GRAY)
     # cv2.imshow("gray", gray)
 
     threshold = gray.copy()
@@ -15,14 +18,13 @@ def preprocess1(img):
     threshold[notMask] = 255
     # cv2.imshow("threshold", threshold)
 
-    kernel = np.ones((11, 11), np.uint8)
+    kernel = np.ones((KERNEL_SIZE_CLOSE, KERNEL_SIZE_CLOSE), np.uint8)
 
     morphclose = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel)
     # cv2.imshow("morphopen", morphclose)
 
-    kernelErode = np.ones((5, 5), np.uint8)
+    kernelErode = np.ones((KERNEL_SIZE_ERODE, KERNEL_SIZE_ERODE), np.uint8)
     erode = cv2.morphologyEx(morphclose, cv2.MORPH_ERODE, kernelErode)
     # cv2.imshow("erode", erode)
 
     return erode
-
