@@ -8,13 +8,14 @@ from tools import *
 from config import *
 
 def main():
-    # imgPath = "img/IMG_1180.JPG"
+    imgPath = "img/IMG_1190.JPG"
     # imgPath = "img/IMG_1109.JPG"
-    imgPath = "img/IMG_1111.JPG"
+    # imgPath = "img/IMG_1187.JPG"
     img = cv2.imread(imgPath)
     img = cv2.resize(img, None, fx=SCALE, fy=SCALE, interpolation=cv2.INTER_CUBIC)
 
-    imgPreprocessed = preprocess1(img)
+    # imgPreprocessed = preprocess1(img)
+    imgPreprocessed = preprocess2(img)
     cv2.imshow("imgPreprocessed", imgPreprocessed)
     circles = process1(imgPreprocessed)
     output = draw_circles_on_image(img, circles)
