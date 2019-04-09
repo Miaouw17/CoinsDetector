@@ -8,7 +8,7 @@ from process import process1
 from tools import create_circular_mask, roi_circle, draw_circles_on_image, get_rois_from_image_and_circles, clear_folder
 
 if __name__ == '__main__':
-    subfolder = "2f"
+    subfolder = "5c"
 
     input_folder = "img/original/" + subfolder + "/"
     ouput_folder = "img/cropped/" + subfolder + "/"
