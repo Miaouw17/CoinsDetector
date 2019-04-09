@@ -7,6 +7,8 @@ from process import *
 from tools import *
 from config import *
 
+# from imageai.Prediction.Custom import CustomImagePrediction
+
 
 def main(imgPath):
 
@@ -25,13 +27,28 @@ def main(imgPath):
 
     for roi in rois_masked:
         cv2.imshow("roi", roi)
+
+        # execution_path = os.getcwd()
+        #
+        # prediction = CustomImagePrediction()
+        # prediction.setModelTypeAsResNet()
+        # prediction.setModelPath("img/train/models/model_ex-001_acc-0.403509.h5")
+        # prediction.setJsonPath("img/train/json/model_class.json")
+        # prediction.loadModel(num_objects=2)
+        #
+        # predictions, probabilities = prediction.predictImage(roi, result_count=3)
+        #
+        # for eachPrediction, eachProbability in zip(predictions, probabilities):
+        #     print(eachPrediction , " : " , eachProbability)
+
         cv2.waitKey(0)
 
 
 if __name__ == '__main__':
     img = [
-        "img/base/IMG_1180.JPG",
-        "img/base/IMG_1109.JPG",
+        #"img/base/IMG_1180.JPG",
+        #"img/base/IMG_1109.JPG",
+        "img/test2.JPG",
         # "img/base/IMG_1111.JPG",
         # "/home/raphael/Desktop/WhatsApp Image 2019-04-02 at 13.41.44.jpeg",
         # "/home/raphael/Desktop/WhatsApp Image 2019-04-02 at 13.53.20.jpeg"
