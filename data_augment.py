@@ -4,7 +4,7 @@ import cv2
 from tools import clear_folder, file_extension
 
 if __name__ == '__main__':
-    subfolder = "2f"
+    subfolder = "5c"
 
     input_folder = "img/cropped/" + subfolder + "/"
     output_folder = "img/rotated/" + subfolder + "/"
