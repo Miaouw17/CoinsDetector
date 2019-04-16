@@ -3,11 +3,7 @@ import cv2
 
 from tools import clear_folder, file_extension
 
-if __name__ == '__main__':
-    subfolder = "5c"
-
-    input_folder = "img/cropped/" + subfolder + "/"
-    output_folder = "img/rotated/" + subfolder + "/"
+def data_augment(input_folder, output_folder):
     clear_folder(output_folder)
 
     nRotations = 10
@@ -17,7 +13,6 @@ if __name__ == '__main__':
     for input_file in input_files:
         path_input_file = input_folder + input_file
         filename, extension = file_extension(input_file)
-        print(path_input_file)
         img = cv2.imread(path_input_file)
         if img is not None:
             cols, rows, depth = img.shape
@@ -26,5 +21,5 @@ if __name__ == '__main__':
                 M = cv2.getRotationMatrix2D((cols / 2, rows / 2), stepRotation * i, 1)
                 imgRotated = cv2.warpAffine(img, M, (cols, rows))
                 path = output_folder + filename + "-" + str(i) + extension
-                print(path)
+                # print(path)
                 cv2.imwrite(path, imgRotated)
