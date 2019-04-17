@@ -14,15 +14,15 @@ from resize import resize
 from train import train
 
 def prepare_images():
-    print("Crop circles 2f")
-    crop_circles("img/original/2f/", "img/cropped/2f/")
-    print("Crop circles 5c")
-    crop_circles("img/original/5c/", "img/cropped/5c/")
-
-    print("Augment 2f")
-    data_augment("img/cropped/2f/", "img/augmented/2f/")
-    print("Augment 5c")
-    data_augment("img/cropped/5c/", "img/augmented/5c/")
+    # print("Crop circles 2f")
+    # crop_circles("img/original/2f/", "img/cropped/2f/")
+    # print("Crop circles 5c")
+    # crop_circles("img/original/5c/", "img/cropped/5c/")
+    #
+    # print("Augment 2f")
+    # data_augment("img/cropped/2f/", "img/augmented/2f/")
+    # print("Augment 5c")
+    # data_augment("img/cropped/5c/", "img/augmented/5c/")
 
     size = (28, 28)
     print("Resize 2f")
