@@ -13,6 +13,7 @@ import cv2
 
 def process_s(image):
     # cv2.imshow("shifted", shifted)
+    shifted = cv2.pyrMeanShiftFiltering(image, 21, 51)
 
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255,

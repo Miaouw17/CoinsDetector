@@ -19,8 +19,8 @@ def predict_redest(rois):
 def predict(filepath):
     img = cv2.imread(filepath)
 
-    img = cv2.pyrMeanShiftFiltering(img, 21, 51)
-    img = cv2.resize(img, None, fx=0.4, fy=0.4,
+    #img = cv2.pyrMeanShiftFiltering(img, 21, 51)
+    img = cv2.resize(img, None, fx=0.2, fy=0.2,
                            interpolation=cv2.INTER_CUBIC)
 
     # imgPreprocessed = preprocess1(img)
@@ -46,15 +46,17 @@ def predict(filepath):
         x, y, r = circles[i]
         ratio_r = r / red_r
         predicted = predict_piece_by_radius_pourcentage(ratio_r)
-        cv2.putText(output, str(i), (x, y),
-    		cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 255), 2)
+        # cv2.putText(output, str(i), (x, y),
+    	# 	cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 255), 2)
         cv2.putText(output, predicted, (x + 30, y),
     		cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 255), 2)
         cv2.circle(output, (x, y), r, (0, 255, 0), 2)
 
-    cv2.imshow("output", cv2.resize(output,None,fx=0.5,fy=0.5))
+    cv2.imshow("output", output)
     cv2.waitKey(0)
 
 
 if __name__ == '__main__':
-    predict("img/redcoin/13.jpeg")
+    #predict("img/redcoin/13.jpeg")
+    predict("img/black_bg1.JPG")
+    # predict("img/base/IMG_1193.JPG")
