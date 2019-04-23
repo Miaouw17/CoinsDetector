@@ -9,7 +9,6 @@ def process1(img):
     circles = np.uint16(np.around(circles))
     return circles[0, :]
 
-
 def process2(img):
     ret, labels = cv2.connectedComponents(img)
     hist, bins = np.histogram(labels.ravel(), 256, [0, 256])
