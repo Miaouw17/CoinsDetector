@@ -18,6 +18,8 @@ def predict_redest(rois):
 
 def predict(filepath):
     img = cv2.imread(filepath)
+
+    img = cv2.pyrMeanShiftFiltering(img, 21, 51)
     img = cv2.resize(img, None, fx=0.4, fy=0.4,
                            interpolation=cv2.INTER_CUBIC)
 
