@@ -17,7 +17,7 @@ def process2(img):
     for i in range(1, len(hist)):
         if hist[i] > 2000:
             valid_surface_id.append(i)
-
+            
     circles = []
     for i in valid_surface_id:
         img = labels.copy()
@@ -28,17 +28,18 @@ def process2(img):
         img = np.uint8(img)
 
         # cv2.imshow("img", img)
-        # cv2.waitKey()
+        # cv2.waitKey(0)
 
         ret, thresh = cv2.threshold(img, 127, 255, 0)
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
         (x, y), radius = cv2.minEnclosingCircle(contours[0])
         x = int(x)
         y = int(y)
         radius = int(radius * EXTENDED_RADIUS)
 
-        # hcircles = cv2.HoughCircles(img, **HOUGH_CIRCLE)
-        # hcircles = np.uint16(np.around(hcircles))[0, :]
+        hcircles = cv2.HoughCircles(img, **HOUGH_CIRCLE)
+        hcircles = np.uint16(np.around(hcircles))[0, :]
 
         circles.extend([[x, y, radius]])
 

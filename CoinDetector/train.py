@@ -51,3 +51,8 @@ def train(folders):
     # image_index = 4444
     # pred = model.predict(x_test[image_index].reshape(1, 28, 28, 1))
     # print(pred.argmax())
+
+
+if __name__ == '__main__':
+    folders = ["img/resized/2f/", "img/resized/2f/"]
+    train(folders)
