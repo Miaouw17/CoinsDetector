@@ -31,18 +31,6 @@ def main(imgPath):
         path = "img/roi_test" + "-" + str(index_test) + ".JPG"
         cv2.imwrite(path, roi)
         index_test += 1
-        # execution_path = os.getcwd()
-        #
-        # prediction = CustomImagePrediction()
-        # prediction.setModelTypeAsResNet()
-        # prediction.setModelPath("img/train/models/model_ex-001_acc-0.403509.h5")
-        # prediction.setJsonPath("img/train/json/model_class.json")
-        # prediction.loadModel(num_objects=2)
-        #
-        # predictions, probabilities = prediction.predictImage(roi, result_count=3)
-        #
-        # for eachPrediction, eachProbability in zip(predictions, probabilities):
-        #     print(eachPrediction , " : " , eachProbability)
 
         cv2.waitKey(0)
 
