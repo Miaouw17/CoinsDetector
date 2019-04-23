@@ -25,9 +25,12 @@ def main(imgPath):
     rois, rois_masked = get_rois_from_image_and_circles(img, circles)
     cv2.waitKey(0)
 
+    index_test = 0
     for roi in rois_masked:
         cv2.imshow("roi", roi)
-
+        path = "img/roi_test" + "-" + str(index_test) + ".JPG"
+        cv2.imwrite(path, roi)
+        index_test += 1
         # execution_path = os.getcwd()
         #
         # prediction = CustomImagePrediction()
