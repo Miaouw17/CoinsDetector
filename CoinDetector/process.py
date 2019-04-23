@@ -17,7 +17,7 @@ def process2(img):
     for i in range(1, len(hist)):
         if hist[i] > 2000:
             valid_surface_id.append(i)
-            
+
     circles = []
     for i in valid_surface_id:
         img = labels.copy()
