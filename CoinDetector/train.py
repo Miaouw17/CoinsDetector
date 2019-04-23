@@ -16,10 +16,10 @@ def train(folders):
         for file in files:
             path = folder + file
             img = cv2.imread(path)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-            cl1 = clahe.apply(img)
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+            # cl1 = clahe.apply(img)
+            # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
             # cv2.imshow("i", img)
             # cv2.imshow("c", cl1)
             # cv2.waitKey(0)
@@ -40,7 +40,7 @@ def train(folders):
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
     model.add(Dense(40, activation=tf.nn.relu))
-    model.add(Dropout(0.2))
+    # model.add(Dropout(0.2))
     model.add(Dense(2, activation=tf.nn.softmax))
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     model.fit(x=x_train, y=y_train, shuffle=True, epochs=2000)
