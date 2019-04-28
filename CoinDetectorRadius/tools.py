@@ -4,18 +4,20 @@ import numpy as np
 
 import shutil
 
-def clear_folder(f):
-    try:
-        shutil.rmtree(f)
-    except:
-        pass
-    os.mkdir(f)
 
-def file_extension(f):
-    splited = f.split(".")
-    extension = splited[-1]
-    del splited[-1]
-    return ".".join(splited), "." + extension
+def create_circular_mask(h, w, center=None, radius=None):
+    """https://stackoverflow.com/a/44874588"""
+    if center is None:  # use the middle of the image
+        center = [w / 2, h / 2]
+    if radius is None:  # use the smallest distance between the center and image walls
+        radius = min(center[0], center[1], w - center[0], h - center[1])
+
+    Y, X = np.ogrid[:h, :w]
+    dist_from_center = np.sqrt((X - center[0])**2 + (Y - center[1])**2)
+
+    mask = dist_from_center > radius
+    return mask
+
 
 def roi_circle(img, circle):
     output = img.copy()
@@ -39,7 +41,7 @@ def roi_circle(img, circle):
         bottom = hImg
 
     roi = output[top:bottom, left:right]
-    
+
     hRoi, wRoi = roi.shape[0], roi.shape[1]
     mask = create_circular_mask(hRoi, wRoi)
     roi_masked = roi.copy()
@@ -47,25 +49,6 @@ def roi_circle(img, circle):
 
     return roi, roi_masked
 
-def create_circular_mask(h, w, center=None, radius=None):
-    """https://stackoverflow.com/a/44874588"""
-    if center is None: # use the middle of the image
-        center = [w/2, h/2]
-    if radius is None: # use the smallest distance between the center and image walls
-        radius = min(center[0], center[1], w-center[0], h-center[1])
-
-    Y, X = np.ogrid[:h, :w]
-    dist_from_center = np.sqrt((X - center[0])**2 + (Y-center[1])**2)
-
-    mask = dist_from_center > radius
-    return mask
-
-def draw_circles_on_image(img, circles):
-    output = img.copy()
-    for x, y, r in circles:
-        cv2.circle(output, (x, y), r, (0, 255, 0), 2)
-        cv2.circle(output, (x, y), 2, (0, 0, 255), 3)
-    return output
 
 def rois_from_circles(img, circles):
     rois = []

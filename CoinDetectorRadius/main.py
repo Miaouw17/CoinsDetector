@@ -7,7 +7,6 @@ import math
 DEBUG = False
 IMAGE_SCALE = 0.4
 
-
 def show(i, s, by_pass=False):
     """Affichage d'une image resizé, si DEBUG et a true ou que le by_pass"""
     if by_pass or DEBUG:
@@ -19,16 +18,20 @@ def process(original):
     """Traitement pour détecter les pièces"""
     show(original, "original")
 
+    # Change to gray scale
     shifted = cv2.pyrMeanShiftFiltering(original, 23, 60)
     show(shifted, "shifted")
 
+    # Passe en niveau de gris
     gray = cv2.cvtColor(shifted, cv2.COLOR_BGR2GRAY)
     show(gray, "gray")
 
+    # Augemente le contraste
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(5, 5))
     cl = clahe.apply(gray)
     show(cl, "clahe")
 
+    # Effectue un seuillage adaptatif
     thresh = cv2.adaptiveThreshold(
         cl, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 33, 20)
     show(thresh, "thresh")
@@ -40,8 +43,11 @@ def process(original):
     # opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, k)
     # show(opening, "opening")
 
+    # Cherche les pièces avec hought circles
     circles = cv2.HoughCircles(thresh, cv2.HOUGH_GRADIENT, dp=3,
                                minDist=100, param1=10, param2=165, minRadius=0, maxRadius=180)
+
+    # Traitement des cercles retournée par houghcircles pour eviter des erreurs
     if circles is None:
         circles = [[]]
 
@@ -56,9 +62,9 @@ radius_lookup = [
     ("5fr", 1),
     ("2fr", 0.87122),
     ('1fr', 0.73767),
+    ('50c', 0.57869),
     ('20c', 0.66931),
     ('10c', 0.60890),
-    ('50c', 0.57869),
     ('5c', 0.54531),
 ]
 
@@ -75,14 +81,11 @@ def predict_circles(circles, refcircle):
     """Prédiction de la pièce en fonction du rayon"""
     predictions = []
 
-    refx, refy, refr = refcircle
-
     for circle in circles:
-        x, y, r = circle
-        if x == refx and y == refy and r == refr:
+        if np.array_equal(circle, refcircle):
             predictions.append("ref")
         else:
-            ratio = r / refr
+            ratio = circle[2] / refcircle[2] # radius ratio
             prediction = predict_circle(ratio)
             predictions.append(prediction)
 
@@ -111,39 +114,39 @@ def find_ref(img, circles):
     rois, rois_masked = rois_from_circles(img, circles)
 
     color_goal = (0, 0, 255)
-    closest = 255 * 3
-    closest_i = 0
+    closest = math.inf
+    closest_i = None
+
     for i in range(len(rois_masked)):
         roi_masked = rois_masked[i]
+        # retire les zone masqué
         mask = np.any(roi_masked != [0, 0, 0], axis=-1)
         roi_masked = roi_masked[mask]
-        # show(roi_masked, "m" + str(i), True)
-        # roi_masked = roi_masked[roi_masked != [0,0,0]]
-        # print(roi_masked)
         mean_color = np.mean(roi_masked, axis=(0))
-        print(i)
-        print(mean_color)
         dist = color_dist(color_goal, mean_color)
-        print(dist)
         if dist < closest:
             closest = dist
             closest_i = i
 
     return circles[closest_i]
 
+def text_center(img, text, org, fontFace, fontScale, color, thickness):
+    retval, baseLine = cv2.getTextSize(text, fontFace, fontScale, thickness)
+    org = (org[0] - retval[0] // 2, org[1] - retval[1] // 2 + baseLine // 2)
+    cv2.putText(img, text, org, fontFace, fontScale, color, thickness)
 
 def draw_circles_predictions(img, circles, predictions):
-    """Retourne une image avec les pièces détectés et leurs prédictions"""
+    """Retourne une image avec un overlay des pièces détectés"""
+    fontFace = cv2.FONT_HERSHEY_DUPLEX
+
     img_circles = img.copy()
     for circle, prediction, i in zip(circles, predictions, range(len(circles))):
         pos = (circle[0], circle[1])
         r = circle[2]
-        cv2.circle(img_circles, pos, r, (0, 255, 0), 2)
-        cv2.circle(img_circles, pos, 2, (0, 0, 255), 3)
-        cv2.putText(img_circles, prediction, pos,
-                    cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 255, 0), 2, cv2.LINE_AA)
-        cv2.putText(img_circles, str(i), (pos[0] - r, pos[1] - r),
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.circle(img_circles, pos, r, (0, 255, 255), 4)
+        cv2.circle(img_circles, pos, 3, (0, 255, 255), 4)
+        text_center(img_circles, str(i) + "#", (pos[0], pos[1] - r), fontFace, 2, (0, 255, 0), 4)
+        text_center(img_circles, prediction, (pos[0], pos[1] + r), fontFace, 4, (0, 0, 255), 6)
     return img_circles
 
 
@@ -156,7 +159,7 @@ def use_case(filepath):
     predictions = predict_circles(circles, refcircle)
 
     img_circles = draw_circles_predictions(img, circles, predictions)
-    show(img_circles, "circles", True)
+    show(img_circles, filepath, True)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
