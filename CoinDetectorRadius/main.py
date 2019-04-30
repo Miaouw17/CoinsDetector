@@ -5,7 +5,7 @@ from tools import rois_from_circles
 import math
 
 DEBUG = False
-IMAGE_SCALE = 0.4
+IMAGE_SCALE = 0.8
 
 def show(i, s, by_pass=False):
     """Affichage d'une image resizé, si DEBUG et a true ou que le by_pass"""
@@ -153,31 +153,29 @@ def draw_circles_predictions(img, circles, predictions):
 def use_case(filepath):
     """Application de la pipe line de détection de pièce"""
     img = cv2.imread(filepath)
+    if img is None:
+        print(filepath + " is not a valid image")
+        exit()
     circles = process(img)
 
     refcircle = find_ref(img, circles)
     predictions = predict_circles(circles, refcircle)
 
     img_circles = draw_circles_predictions(img, circles, predictions)
-    show(img_circles, filepath, True)
-
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    return img_circles
 
 
 if __name__ == '__main__':
-    folder = "img/red/"
-    # use_case(folder + "1.jpeg")
-    # use_case(folder + "2.jpeg")
-    # use_case(folder + "3.jpeg")
-    # use_case(folder + "4.jpeg")
-    # use_case(folder + "5.jpeg")
-    # use_case(folder + "6.jpeg")
-    # use_case(folder + "7.jpeg")
-    # use_case(folder + "8.jpeg")
-    # use_case(folder + "9.jpeg")
-    # use_case(folder + "10.jpeg")
-    use_case(folder + "11.jpeg")
-    # use_case(folder + "12.jpeg")
-    # use_case(folder + "13.jpeg")
-    # use_case(folder + "14.jpeg")
+    import os
+    folder = os.getcwd() + "/CoinDetectorRadius/img/redcoin/"
+    imgoutput = []
+    for i in range(3):
+        path = folder + str(i) + ".jpeg"
+        print("processing : ", path)
+        img = (use_case(path), path)
+        imgoutput.append(img)
+    for img, path in imgoutput:
+        show(img, path, True)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
