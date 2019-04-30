@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from tools import rois_from_circles
 import math
 
-DEBUG = False
-IMAGE_SCALE = 0.8
+DEBUG = True
+IMAGE_SCALE = 0.7
 
 def show(i, s, by_pass=False):
     """Affichage d'une image resizé, si DEBUG et a true ou que le by_pass"""
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     import os
     folder = os.getcwd() + "/CoinDetectorRadius/img/redcoin/"
     imgoutput = []
-    for i in range(3):
+    for i in [13]:#[0,1,4,8,13]:#range(5):
         path = folder + str(i) + ".jpeg"
         print("processing : ", path)
         img = (use_case(path), path)
