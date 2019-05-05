@@ -1,3 +1,5 @@
+import os
+import sys
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
@@ -166,16 +168,17 @@ def use_case(filepath):
 
 
 if __name__ == '__main__':
-    import os
-    folder = os.getcwd() + "/CoinDetectorRadius/img/redcoin/"
-    imgoutput = []
-    for i in [13]:#[0,1,4,8,13]:#range(5):
-        path = folder + str(i) + ".jpeg"
-        print("processing : ", path)
-        img = (use_case(path), path)
-        imgoutput.append(img)
-    for img, path in imgoutput:
-        show(img, path, True)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    cwd = os.getcwd()
 
+    DEBUG = "--debug" in sys.argv
+    if DEBUG:
+        del sys.argv[sys.argv.index("--debug")]
+
+    for files in sys.argv[1:]:
+        fullpath = os.path.join(cwd, files)
+        if os.path.exists(fullpath):
+            show(use_case(fullpath), fullpath, True)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+        else:
+            print("this file doesn't exist :", fullpath)
