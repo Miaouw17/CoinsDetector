@@ -12,6 +12,10 @@ cd CoinDetectorRadius
 pip install -r requirements.txt
 ```
 
+## Download test files
+
+[https://github.com/Miaouw17/CoinsDetector/wiki/redcoin_example.zip]()
+
 ## Example
 
 ```bash
